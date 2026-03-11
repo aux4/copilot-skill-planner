@@ -1,8 +1,6 @@
-# Copilot Skill Planner Tests
+# copilot skills planner
 
-Tests for the `aux4 copilot skills planner` commands.
-
-## Test 1: Prompt command
+## prompt
 
 ### should output planner instructions
 
@@ -44,17 +42,11 @@ aux4 copilot skills planner prompt
 ## Todo Command Reference
 ```
 
-## Test 2: Status command
+## status command
 
-```beforeEach
-rm -f .todo.json
-```
+### help
 
-```afterAll
-rm -f .todo.json
-```
-
-### should show status command parameters
+#### should show name parameter
 
 ```execute
 aux4 copilot skills planner status --help
@@ -64,7 +56,7 @@ aux4 copilot skills planner status --help
 Name of the plan to view
 ```
 
-### should show file parameter
+#### should show file parameter
 
 ```execute
 aux4 copilot skills planner status --help
@@ -74,7 +66,13 @@ aux4 copilot skills planner status --help
 Todo file path
 ```
 
-### should show todo list status
+### with todo list
+
+```afterAll
+rm -f .todo.json
+```
+
+#### should show todo list status
 
 ```execute
 aux4 todo new "test-plan" --item "Step one" && aux4 copilot skills planner status test-plan
@@ -86,7 +84,7 @@ Todo 'test-plan' created.
   0: [ ] Step one
 ```
 
-### should show completed items
+#### should show completed items
 
 ```execute
 aux4 todo new "status-plan" --item "First step" && aux4 todo add "status-plan" --item "Second step" && aux4 todo complete "status-plan" --index 0 && aux4 copilot skills planner status status-plan
@@ -97,13 +95,13 @@ Todo 'status-plan' created.
 Item added to 'status-plan'.
 Item 0 in 'status-plan' marked as completed.
 ## status-plan
-  0: \[x\] .*̶.*
+  0: \[x\] .*
   1: \[ \] Second step
 ```
 
-## Test 3: Plan command help
+## plan command help
 
-### should show plan command parameters
+### should show task parameter
 
 ```execute
 aux4 copilot skills planner plan --help
@@ -123,9 +121,9 @@ aux4 copilot skills planner plan --help
 Name for the plan and todo list
 ```
 
-## Test 4: Execute command help
+## execute command help
 
-### should show execute command parameters
+### should show name parameter
 
 ```execute
 aux4 copilot skills planner execute --help
@@ -135,7 +133,7 @@ aux4 copilot skills planner execute --help
 Name of the plan to execute
 ```
 
-## Test 5: Planner skill registration
+## skill registration
 
 ### should appear in copilot skills
 
