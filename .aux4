@@ -1,0 +1,124 @@
+{
+  "scope": "agent",
+  "name": "copilot-skill-planner",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "description": "Copilot skill for planning and executing multi-step tasks",
+  "dependencies": [
+    "aux4/copilot",
+    "aux4/todo"
+  ],
+  "profiles": [
+    {
+      "name": "copilot:skills",
+      "commands": [
+        {
+          "name": "planner",
+          "execute": [
+            "profile:copilot:skills:planner"
+          ],
+          "help": {
+            "text": "Plan and execute multi-step tasks with structured task lists"
+          }
+        }
+      ]
+    },
+    {
+      "name": "copilot:skills:planner",
+      "commands": [
+        {
+          "name": "prompt",
+          "execute": [
+            "cat ${packageDir}/instructions/planner.md"
+          ],
+          "help": {
+            "text": "Get the prompt/instructions for this skill"
+          }
+        },
+        {
+          "name": "plan",
+          "execute": [
+            "aux4 ai agent ask --instructions ${packageDir}/instructions/planner.md --question 'Plan: ${task}. ${message}'"
+          ],
+          "help": {
+            "text": "Plan a multi-step task: clarify, create todo list, save plan, confirm, execute",
+            "variables": [
+              {
+                "name": "task",
+                "text": "The task to plan",
+                "arg": true
+              },
+              {
+                "name": "name",
+                "text": "Name for the plan and todo list",
+                "default": ""
+              },
+              {
+                "name": "file",
+                "text": "Todo file path",
+                "default": ".todo.json"
+              },
+              {
+                "name": "output",
+                "text": "Plan output file path",
+                "default": ""
+              },
+              {
+                "name": "message",
+                "text": "Additional instructions",
+                "default": ""
+              }
+            ]
+          }
+        },
+        {
+          "name": "execute",
+          "execute": [
+            "aux4 ai agent ask --instructions ${packageDir}/instructions/planner.md --question 'Execute plan: ${name}. ${message}'"
+          ],
+          "help": {
+            "text": "Resume execution of an existing plan",
+            "variables": [
+              {
+                "name": "name",
+                "text": "Name of the plan to execute",
+                "arg": true
+              },
+              {
+                "name": "file",
+                "text": "Todo file path",
+                "default": ".todo.json"
+              },
+              {
+                "name": "message",
+                "text": "Additional instructions",
+                "default": ""
+              }
+            ]
+          }
+        },
+        {
+          "name": "status",
+          "execute": [
+            "aux4 todo view ${name} --file ${file}"
+          ],
+          "help": {
+            "text": "View the status of a plan's task list",
+            "variables": [
+              {
+                "name": "name",
+                "text": "Name of the plan to view",
+                "arg": true
+              },
+              {
+                "name": "file",
+                "text": "Todo file path",
+                "default": ".todo.json"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
